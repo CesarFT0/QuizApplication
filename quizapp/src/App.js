@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Question from "./Components/Question";
 import Score from "./Components/Score";
 import TopicSelector from "./Components/TopicSelector";
@@ -106,7 +106,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App d-flex flex-column align-items-center justify-content-center">
-          <NavigationBar onLoginOptionClick={this.handleLoginOptionClick} location={this.props.location} />
+          <NavigationBar onLoginOptionClick={this.handleLoginOptionClick} />
           <h1 className="app-title">QUIZ APP</h1>
           <Routes>
             <Route
@@ -147,3 +147,4 @@ class App extends Component {
 }
 
 export default App;
+

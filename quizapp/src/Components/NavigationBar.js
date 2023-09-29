@@ -12,34 +12,6 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const DropdownButton = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const DropdownContent = styled.div`
-  display: ${(props) => (props.isOpen ? "block" : "none")};
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-`;
-
-const DropdownItem = styled.button`
-  background-color: #f9f9f9;
-  color: black;
-  padding: 12px 16px;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #ddd;
-  }
-`;
-
 class NavigationBar extends Component {
   constructor(props) {
     super(props);
@@ -48,40 +20,16 @@ class NavigationBar extends Component {
     };
   }
 
-  handleLoginClick = () => {
-    this.setState((prevState) => ({
-      isLoginOpen: !prevState.isLoginOpen,
-    }));
-  };
-
-  handleOptionClick = (option) => {
-    this.props.onLoginOptionClick(option);
-    
-    this.setState({ isLoginOpen: false });
-  };
-
   render() {
-    const { isLoginOpen } = this.state;
-
     return (
       <div className="navbar">
         <div className="navbar-content">
           <Link to="http://localhost:3000/" className="custom-link">
             <Button>Home</Button>
           </Link>
-          <DropdownButton>
-            <Button onClick={this.handleLoginClick}>Login</Button>
-            <DropdownContent isOpen={isLoginOpen}>
-              <DropdownItem onClick={() => this.handleOptionClick("Admin")}>
-                Admin
-              </DropdownItem>
-              <Link to="/login/user" className="custom-link">
-                <DropdownItem onClick={() => this.handleOptionClick("User")}>
-                  User
-                </DropdownItem>
-              </Link>
-            </DropdownContent>
-          </DropdownButton>
+          <Link to="/login/user" className="custom-link">
+            <Button>Sign Up</Button>
+          </Link>
           <Link to="/about-us" className="custom-link">
             <Button>About us</Button>
           </Link>
@@ -95,6 +43,8 @@ class NavigationBar extends Component {
 }
 
 export default NavigationBar;
+
+
 
 
 

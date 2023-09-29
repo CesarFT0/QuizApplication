@@ -26,7 +26,7 @@ class ContactUs extends Component {
   render() {
     return (
       <div>
-        <h2>Contact Us</h2>
+        <h2><center>Contact Us</center></h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>First Name</label>
