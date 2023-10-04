@@ -8,6 +8,13 @@ import NavigationBar from "./Components/NavigationBar";
 import UserSignup from "./Components/UserSignupPage";
 import ContactUs from "./Components/ContactUs";
 import "./App.css";
+import AdminLoginPage from "./Components/AdminLoginPage";
+import AdminDashBoard from "./Components/AdminDashBoard";
+import AddQuestionPage from "./Components/AddQuestionPage";
+import AddTopicPage from "./Components/AddTopicPage";
+import DeletQuestionPage from "./Components/DeleteQuestionPage";
+import DeleteTopicPage from "./Components/DeleteTopicPage";
+import EditQuestionPage from "./Components/EditQuestionPage";
 
 class App extends Component {
   constructor(props) {
@@ -48,6 +55,9 @@ class App extends Component {
     const { questionBank, currentQuestion, selectedOption, score } = this.state;
     const currentQuestionData = questionBank[currentQuestion];
 
+    console.log("Current Question Data: ",currentQuestionData);
+    console.log("Selected Option: ", selectedOption);
+    console.log("score: ", score);
     if (currentQuestionData && selectedOption === currentQuestionData.correctAnswer) {
       this.setState((prevState) => ({ score: prevState.score + 1 }));
     }
@@ -139,6 +149,13 @@ class App extends Component {
             />
             <Route path="/login/user" element={<UserSignup />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashBoard />} />
+            <Route path="/admin/add-question" element={<AddQuestionPage />} />
+            <Route path="/admin/add-topic" element={<AddTopicPage />} />
+            <Route path="/admin/delete-question" element={<DeletQuestionPage />} />
+            <Route path="/admin/delete-topic" element={<DeleteTopicPage />} />
+            <Route path="/admin/edit-question" element={<EditQuestionPage />} />
           </Routes>
         </div>
       </Router>
