@@ -1,9 +1,14 @@
 body {
-  background-color: #292b2e;
+  background-image: url('https://www.unigo.com/wp-content/uploads/2021/04/info-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
   color: #ffffff;
 }
+
  
 .app-title {
-  color: #ffffff;
+  color: #686666;
   margin-top: 2rem;
 }
