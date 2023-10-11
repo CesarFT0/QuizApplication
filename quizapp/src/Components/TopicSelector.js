@@ -35,7 +35,7 @@ class TopicSelector extends Component {
 
     return (
       <div>
-        <h1>Select a Topic</h1>
+        <h1 style={{ color: "black" }}>Select a Topic</h1>
         <div className="form-group">
           <select
             className="form-control"

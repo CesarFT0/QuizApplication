@@ -95,7 +95,7 @@ class UserSignupPage extends Component {
     return (
       <div>
         <h2>
-          <center>USER SIGN UP</center>
+        <center><h1 style={{ color: "black" }}>USER SIGN UP</h1></center>
         </h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
