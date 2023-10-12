@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './UserSignupPage.css'; 
 
 class UserSignupPage extends Component {
   constructor(props) {
@@ -93,16 +94,15 @@ class UserSignupPage extends Component {
     const { name, username, phoneNumber, email, password, errors } = this.state;
 
     return (
-      <div>
-        <h2>
-        <center><h1 style={{ color: "black" }}>USER SIGN UP</h1></center>
-        </h2>
+      <div className="form-container">
+        <h2 className="form-title">USER SIGN UP</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label>Name</label>
+            
             <input
               type="text"
               name="name"
+              placeholder="Enter Name"
               value={name}
               onChange={this.handleInputChange}
               className={`form-control ${errors.name ? "is-invalid" : ""}`}
@@ -112,10 +112,11 @@ class UserSignupPage extends Component {
             )}
           </div>
           <div className="form-group">
-            <label>Username</label>
+           
             <input
               type="text"
               name="username"
+              placeholder="Enter Username"
               value={username}
               onChange={this.handleInputChange}
               className={`form-control ${errors.username ? "is-invalid" : ""}`}
@@ -125,10 +126,11 @@ class UserSignupPage extends Component {
             )}
           </div>
           <div className="form-group">
-            <label>Phone Number</label>
+    
             <input
               type="text"
               name="phoneNumber"
+              placeholder="Phone: (___)___-____"
               value={phoneNumber}
               onChange={this.handleInputChange}
               className={`form-control ${errors.phoneNumber ? "is-invalid" : ""}`}
@@ -138,10 +140,11 @@ class UserSignupPage extends Component {
             )}
           </div>
           <div className="form-group">
-            <label>Email</label>
+            
             <input
               type="email"
               name="email"
+              placeholder="Email"
               value={email}
               onChange={this.handleInputChange}
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
@@ -151,10 +154,11 @@ class UserSignupPage extends Component {
             )}
           </div>
           <div className="form-group">
-            <label>Password</label>
+            
             <input
               type="password"
               name="password"
+              placeholder="Password"
               value={password}
               onChange={this.handleInputChange}
               className={`form-control ${errors.password ? "is-invalid" : ""}`}
@@ -164,7 +168,7 @@ class UserSignupPage extends Component {
             )}
             {errors.password && (
               <div className="password-rules">
-                Password must:
+                <span style={{ color: "white", fontWeight: "bold" }}>Password must be:</span>
                 <ul>
                   <li>Be at least 8 characters long</li>
                   <li>Contain at least one uppercase letter</li>
@@ -174,7 +178,7 @@ class UserSignupPage extends Component {
               </div>
             )}
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn-signup">
             Sign Up
           </button>
         </form>
@@ -184,3 +188,4 @@ class UserSignupPage extends Component {
 }
 
 export default UserSignupPage;
+
