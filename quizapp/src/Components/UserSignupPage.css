@@ -1,0 +1,156 @@
+.error {
+    color: red;
+    font-size: 14px;
+  }
+
+  .password-rules ul li {
+    color: white; 
+  }
+
+.form-container {
+  background: #453f3f;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  margin: 0 auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-title {
+  text-align: center;
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.btn-signup {
+  background: #4070f4;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  padding: 10px 120px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.btn-signup:hover {
+  background: #0e4bf1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+  .wrapper {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.wrapper h2::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 3px;
+  background: #4070f4;
+  border-radius: 12px;
+  margin: 0 auto 10px;
+}
+
+.wrapper form {
+  margin-top: 20px;
+}
+
+.wrapper form .form-group {
+  margin-bottom: 20px;
+}
+
+form .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+form .form-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #C7BEBE;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+form .form-group input:focus {
+  border-color: #4070f4;
+}
+
+form .invalid-feedback {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.password-rules ul {
+  list-style: none;
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.input-box.button input {
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  background: #4070f4;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+}
+
+.input-box.button input:hover {
+  background: #0e4bf1;
+}
+
+form .text h3 {
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+}
+
+form .text h3 a {
+  color: #4070f4;
+  text-decoration: none;
+}
+
+form .text h3 a:hover {
+  text-decoration: underline;
+}
+
+.btn-sendmessage {
+  background: #4070f4;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  padding: 10px 90px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 8px 0 2px;
+}
+
+.btn-sendmessage:hover {
+  background: #0e4bf1;
+}
