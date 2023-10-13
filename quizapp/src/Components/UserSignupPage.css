@@ -20,6 +20,7 @@
   text-align: center;
   font-size: 28px;
   color: #ffffff;
+  margin-bottom: 20px;
 }
 
 .btn-signup {
@@ -30,7 +31,7 @@
   padding: 10px 120px;
   border-radius: 6px;
   cursor: pointer;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .btn-signup:hover {
@@ -38,7 +39,7 @@
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
   .wrapper {
@@ -139,4 +140,17 @@ form .text h3 a:hover {
   text-decoration: underline;
 }
 
+.btn-sendmessage {
+  background: #4070f4;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  padding: 10px 90px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 8px 0 2px;
+}
 
+.btn-sendmessage:hover {
+  background: #0e4bf1;
+}
