@@ -30,7 +30,7 @@ class NavigationBar extends Component {
           <Link to="/login/user" className="custom-link">
             <Button>Sign Up</Button>
           </Link>
-          <Link to="/about-us" className="custom-link">
+          <Link to="/aboutUs" className="custom-link">
             <Button>About us</Button>
           </Link>
           <Link to="/contact" className="custom-link">

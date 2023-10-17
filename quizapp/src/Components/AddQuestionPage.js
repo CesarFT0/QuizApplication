@@ -4,128 +4,223 @@ class AddQuestionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            topics: [],
+            selectedTopicId: "",
             questionId: "",
-            topicId: "",
-            question_description: "",
+            questionDescription: "",
             option1: "",
             option2: "",
             option3: "",
             option4: "",
-            correct_answer: ""
+            correctAnswer: "",
+            successMessage: null,
         };
     }
 
-    //Hanlde the form input and changes
-    handleInputChange = (e) => {
-        const { name, value } = e.target;
+    componentDidMount() {
+        this.fetchAvailableTopics();
+    }
+
+    fetchAvailableTopics() {
+        fetch(`/topic/getAllTopics`)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({ topics: data});
+        })
+        .catch((error) => {
+            console.error("Error Fetching topics: ", error);
+        });
+    }
+
+    //Fetch the maximum question Id for the selected Topic
+    fetchMaxQuestionIdForTopic() {
+        //fetch(`/questions/getQuestionsByTopic/${this.state.selectedTopicId}`)
+        fetch(`/questions/allQuestions`)
+        .then((response) => response.json())
+        .then((data) => {
+            //Find the maximum question Id from the fetched questions
+            const maxQuestionId = Math.max(...data.map((question) => question.questionId));
+            //Set the next Question Id (one more than the maximum)
+            this.setState({ questionId: maxQuestionId + 1});
+        })
+        .catch((error) => {
+            console.error("Error fetching questions for the selected Topic: ", error);
+        });
+    }
+
+
+    //Handle the form field changes
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
+    //Handle the topic selection in the drop-down
+    handleTopicSelect = (event) => {
+        const selectedTopicId = event.target.value;
+        this.setState({ selectedTopicId }, () => {
+            //fetch the maximum question Id
+            this.fetchMaxQuestionIdForTopic();
+        });
+    } 
+
+
     //Handle the form submission
-    handleSubmit = (e) => {
-        e.preventDefault();
-        //Add a validation for the topicId
-        if(![1,2,3,4].includes(Number(this.state.topicId))) {
-            alert("Invalid Topic Id entered");
+    handleSubmit = (event) => {
+        event.preventDefault();
+
+        console.log("topic id: ",this.state.selectedTopicId);
+
+        if(!this.state.selectedTopicId) {
+            console.error("Selected Topic Id is required");
             return;
         }
-            //Add the logic for constructing the sql insert query here
+        //create a new question object
+        const newQuestion = {
+            topicId: this.state.selectedTopicId,
+            questionId: this.state.questionId,
+            questionDescription: this.state.questionDescription,
+            option1: this.state.option1,
+            option2: this.state.option2,
+            option3: this.state.option3,
+            option4: this.state.option4,
+            correctAnswer: this.state.correctAnswer,
+        };
+        console.log("topic id: ",this.state.selectedTopicId);
+        console.log("question id: ",this.state.questionId);
+        fetch(`/admin/addQuestion`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newQuestion),
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                console.log("Question Added Successfully");
+
+                //Reset the form fields
+                this.setState({
+                    selectedTopicId: "",
+                    questionId: "",
+                    questionDescription: "",
+                    option1: "",
+                    option2: "",
+                    option3: "",
+                    option4: "",
+                    correctAnswer: "",
+                    successMessage: "Question Added Successfully",
+                })
+            } else {
+                console.error("Error adding question", response.status);
+            }
+        })
+        .catch((error) => {
+            console.error("Error adding questions", error);
+        });
     };
 
     render() {
+        const { topics, successMessage } = this.state;
         return (
-            <div>
-                <h2>Add New Question </h2>
+            <div className="add-question-page">
+                <h2> Add New Question </h2>
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label> Question ID</label>
+                    {successMessage && <p className="success-message">{successMessage}</p>}
+                    <label>
+                        Select Topic: 
+                        <select
+                            name="selectedTopicId"
+                            value={this.state.selectedTopicId}
+                            onChange={this.handleTopicSelect}
+                        >
+                        <option value=""> Select a Topic</option>
+                        {topics.map((topic => (
+                            <option key={topic.topicId} value={topic.topicId}>
+                                {topic.topicName}
+                            </option>
+                        )))}
+                        </select>
+                    </label>
+                    <br></br>
+
+                    <label>
+                        Question Description: 
                         <input
                             type="text"
-                            name="questionId"
-                            value={this.state.questionId}
+                            name="questionDescription"
+                            value={this.state.questionDescription}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Topic ID</label>
-                        <input
-                            type="text"
-                            name="topicId"
-                            value={this.state.topicId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Question Description</label>
-                        <input
-                            type="text"
-                            name="question_description"
-                            value={this.state.question_description}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 1</label>
+                        >
+                        </input>
+                    </label>
+                    <br></br>
+                    <label>
+                        Option1: 
                         <input
                             type="text"
                             name="option1"
                             value={this.state.option1}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 2</label>
+                        >
+                        </input>
+                    </label>
+                    
+                    <br></br>
+                    <label>
+                        Option2: 
                         <input
                             type="text"
                             name="option2"
                             value={this.state.option2}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 3</label>
+                        >
+                        </input>
+                    </label>
+
+                    <br></br>
+                    <label>
+                        Option3: 
                         <input
                             type="text"
                             name="option3"
                             value={this.state.option3}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 4</label>
+                        >
+                        </input>
+                    </label>
+
+                    <br></br>
+                    <label>
+                        Option4: 
                         <input
                             type="text"
                             name="option4"
                             value={this.state.option4}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Correct Answer</label>
+                        >
+                        </input>
+                    </label>
+
+                    <br></br>
+                    <label>
+                        correctAnswer: 
                         <input
                             type="text"
-                            name="correct_answer"
-                            value={this.state.correct_answer}
+                            name="correctAnswer"
+                            value={this.state.correctAnswer}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-primary">
+                        >
+                        </input>
+                    </label>
+                    <br></br>
+                    <button type="submit">
                         Add Question
                     </button>
                 </form>
