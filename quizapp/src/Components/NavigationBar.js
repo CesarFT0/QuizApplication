@@ -37,7 +37,7 @@ class NavigationBar extends Component {
             <Button>Contact us</Button>
           </Link>
           <Link to="/admin/login" className="custom-link">
-            <Button>admin</Button>
+            <Button>Admin</Button>
           </Link>
         </div>
       </div>

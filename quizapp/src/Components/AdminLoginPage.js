@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './UserSignupPage.css';
 
 function AdminLoginPage() {
     const navigate = useNavigate();
@@ -17,32 +18,28 @@ function AdminLoginPage() {
     };
 
     return (
-        <div>
-            <h2> admin login </h2>
+        <div className="form-container">
+            <h2 className="form-title">Admin Login</h2>
             <form>
-                <div classname="form-group">
-                    <label>
-                        username
-                    </label>
+                <div className="form-group">
                     <input 
                         type="text"
+                        placeholder="Username" 
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        classname="form-control"
+                        className="form-control"
                     />
                 </div>
                 <div className="form-group">
-                <label>
-                        password
-                    </label>
                     <input 
                         type="password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        classname="form-control"
+                        className="form-control"
                     />
                 </div>
-                <button type="button" onClick={handleLogin} className="btn btn-primary">
+                <button type="button" onClick={handleLogin} className="btn-Adminlogin">
                     Login
                 </button>
             </form>

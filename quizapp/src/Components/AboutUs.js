@@ -1,10 +1,13 @@
 import React from "react";
+import './UserSignupPage.css';
 
 const AboutUs = () => {
     return (
-        <div className="about-us-page">
-            <h2> About Us</h2>
+        
+        <div className="form-container">
+            <h2 className="form-title">About us</h2>
             
+            <span className="aboutustext">
             <p>
                 Welcome to the quiz application. We are a team of developers passionate about creating 
                 a fun and interactive platform for learning and testing your knowledge.
@@ -26,7 +29,10 @@ const AboutUs = () => {
                 Thank you for taking the time and choosing our quiz application
             </p>
 
+            </span>
+
         </div>
+    
     );
 };
 

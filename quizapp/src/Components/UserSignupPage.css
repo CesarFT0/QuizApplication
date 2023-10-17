@@ -154,3 +154,18 @@ form .text h3 a:hover {
 .btn-sendmessage:hover {
   background: #0e4bf1;
 }
+
+.btn-Adminlogin {
+  background: #4070f4;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  padding: 10px 130px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 8px 0 2px;
+}
+
+.aboutustext {
+  color: white;
+}
