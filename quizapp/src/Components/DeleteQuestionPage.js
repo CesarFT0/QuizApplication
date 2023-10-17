@@ -1,86 +1,121 @@
 import React, { Component } from "react";
 
-class DeletQuestionPage extends Component {
+class DeleteQuestionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questionId: "",
-            topicId: "",
-            questionDescription: "",
-            errorMessage: "",
-        }
-    };
+           topics: [],
+           selectedTopicId: "",
+           questions: [],
+        };
+    }
 
-    //Handling the form input changes
-    handleInputChanges = (e) => {
-        const { name, value } = e.target;
-        this.setState({ [name]: value});
-    };
+    componentDidMount() {
+        this.fetchAvailableTopics();
+    }
 
-    //Handling the form submission and validations
+    fetchAvailableTopics() {
+        fetch(`/topic/getAllTopics`)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({ topics: data});
+        })
+        .catch((error) => {
+            console.error("Error Fetching topics: ",error);
+        });
+    }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
+    fetchQuestionsForTopic() {
+        fetch(`/questions/getQuestionsByTopic/${this.state.selectedTopicId}`)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({ questions: data });
+        })
+        .catch((error) => {
+            console.error("Error fetching questions for the selected topic: ",error);
+        });
+    }
 
-        //Validate the inputs
-        if(!this.state.questionId || this.state.topicId || this.state.questionDescription) {
-            this.setState({ errorMessage: "All fields are required "});
-            return;
-        }
+    handleTopicSelect = (event) => {
+        this.setState({ selectedTopicId: event.target.value }, () => {
+            this.fetchQuestionsForTopic();
+        });
+    }
 
-        //clearing the previous error messages
-        this.setState({ errorMessage: ""});
-
-        //API calls for deleting after checking whether the question is even present or not
-
+    handleQuestionDelete = (questionId) => {
+        fetch(`/admin//deleteQuestion/${questionId}` , {
+            method: 'DELETE',
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                const updatedQuestions = this.state.questions.filter(
+                    (question) => question.questionId !== questionId
+                );
+                this.setState({ questions: updatedQuestions });
+            } else {
+                console.error("Error deleting question: ",response.status);
+            }
+        }).catch((error) => {
+            console.error("Error deleting question: ",error);
+        });
     };
 
     render() {
+        const { topics, selectedTopicId, questions } = this.state;
+
         return (
-            <div>
-                <h2> Delete Question </h2>
-                <form onSubmit={this.handleSubmit}>
-                    {this.state.errorMessage && (
-                        <div className="alert alert-danger"> {this.state.errorMessage} </div>
-                    )}
-                <div className="form-group">
-                    <label>Question Id</label>
-                <input
-                            type="text"
-                            name="questionId"
-                            value={this.state.questionId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                </div>
-                <div className="form-group">
-                        <label>Topic ID</label>
-                        <input
-                            type="text"
-                            name="topicId"
-                            value={this.state.topicId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Question Description</label>
-                        <input
-                            type="text"
-                            name="questionDescription"
-                            value={this.state.questionDescription}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-danger"> Delete Question </button>
-                </form>
+            <div className="delete-question-page">
+                <h2> Delete Question</h2>
+                <label>
+                    Select Topic: 
+                    <select
+                        name="selectedTopicId"
+                        value={selectedTopicId}
+                        onChange={this.handleTopicSelect}>
+                        <option value="">Select a Topic</option>
+                        {topics.map((topic) => (
+                            <option key={topic.topicId} value={topic.topicId}>
+                                {topic.topicName}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question Id</th>
+                            <th>Question Description</th>
+                            <th>Option1</th>
+                            <th>Option2</th>
+                            <th>Option3</th>
+                            <th>Option4</th>
+                            <th>Correct Answer</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {questions.map((question) => (
+                            <tr key={question.questionId}>
+                                <td>{question.questionId}</td>
+                                <td>{question.questionDescription}</td>
+                                <td>{question.option1}</td>
+                                <td>{question.option2}</td>
+                                <td>{question.option3}</td>
+                                <td>{question.option4}</td>
+                                <td>{question.correctAnswer}</td>
+                                <td>
+                                    <button onClick={() => this.handleQuestionDelete(question.questionId)}>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         );
     }
 }
 
-export default DeletQuestionPage;
+export default DeleteQuestionPage;

@@ -4,65 +4,107 @@ class AddTopicPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            topicId: "",
+            topics: [],
             topicName: "",
-        }
-    };
+            successMessage: "",
+            errorMessage: "",
+        };
+    }
 
-    //for handling the form input changes, we have
-    handleInputChange =(e) => {
-        const { name, value } = e.target;
-        this.setState({ [name]: value});
-    };
+    componentDidMount() {
+        //Fetch all the topics
+        this.fetchAvailableTopics();
+    }
 
-    //handling the submission of form
-    handleSubmit = (e) => {
-        e.preventDefault();
+    fetchAvailableTopics() {
+        fetch(`/topic/getAllTopics`)
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({ topics:data });
+            //Find the maximum topic
+            const maxTopicId = Math.max(...data.map((topic) => topic.topicId));
+            //calculate the new TopicId as one more than the maximum
+            this.setState( {topicId: maxTopicId + 1 });
+        })
+        .catch((error) => {
+            console.error("Error Fetching topics: ",error);
+        });
+    }
 
-        //check if the entered topicId is correct or not
-        const invalidTopicIds = [1,2,3,4];
-        if (invalidTopicIds.includes(Number(this.state.topicId))) {
-            this.setState({ errorMessage: "Topic Id already present"});
-            return;
-        }
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({ [name]: value });
+    }
 
-        //clearing any previous error messages
-        this.setState({ errorMessage : ""});
+    handleSubmit = (event) => {
+        event.preventDefault();
 
-        //add the code for generating the sql query and sending it to the API
-    };
+        const newTopic = {
+            topicId: this.state.topicId,
+            topicName: this.state.topicName,
+        };
+
+        fetch(`/admin/addTopic`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTopic),
+        })
+        .then((response) => {
+            if(response.status === 200) {
+                //Topic added successfully, set success message
+                this.setState({ successMessage: "Topic added successfully!", errorMessage: ""});
+                //Clear the fields
+                this.setState({ topicName: ""});
+                //Redirect to the add new question page
+                this.props.history.push("/add-question");
+            } else {
+                //console.error("Error adding new topic:", response.status);
+                this.setState({ successMessage: "", errorMessage:" Something went wrong, topic not added "});
+            }
+        }).catch((error) => {
+            //console.error("Error adding new topic:", error);
+            this.setState({ successMessage: "", errorMessage:" Something went wrong, topic not added "});
+        });
+    }
 
     render() {
         return (
-            <div>
-                <h2> Add a Topic </h2>
+            <div className="add-topic-page">
+                <h2>
+                    Add New Topic
+                </h2>
                 <form onSubmit={this.handleSubmit}>
-                    {this.state.errorMessage && (
-                        <div className="alert alert-danger">{this.state.errorMessage}</div>
-                    )}
-                    <div className="form-group">
-                        <label> Topic ID </label>
-                        <input
+                    {/* <label>
+                        Topic Id
+                        <input 
                             type="text"
                             name="topicId"
                             value={this.state.topicId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label> Topic name </label>
-                        <input
+                            readOnly
+                        >
+                        </input>
+                    </label>
+                    <br>
+                    </br> */}
+
+                    <label>
+                        Topic Name
+                        <input 
                             type="text"
                             name="topicName"
                             value={this.state.topicName}
                             onChange={this.handleInputChange}
-                            className="form-control"
                             required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-primary"> Add Topic </button>
+                        >
+                        </input>
+                    </label>
+                    <br>
+                    </br>
+                    <button type="submit">
+                        Add Topic
+                    </button>
                 </form>
             </div>
         );

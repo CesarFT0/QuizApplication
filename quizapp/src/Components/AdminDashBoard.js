@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 function AdminDashBoard() {
@@ -24,7 +24,6 @@ function AdminDashBoard() {
                     <button type="button" className="btn btn-primary">Delete Topic</button>
                 </Link>
                 </form>
-                <p> paragraph for checking</p>
             </div>
         );
 }

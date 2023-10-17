@@ -15,6 +15,7 @@ import AddTopicPage from "./Components/AddTopicPage";
 import DeletQuestionPage from "./Components/DeleteQuestionPage";
 import DeleteTopicPage from "./Components/DeleteTopicPage";
 import EditQuestionPage from "./Components/EditQuestionPage";
+import AboutUs from "./Components/AboutUs";
 
 class App extends Component {
   constructor(props) {
@@ -109,7 +110,6 @@ class App extends Component {
       score,
       quizEnd,
       selectedTopic,
-      selectedLoginOption,
     } = this.state;
     const currentQuestionData = questionBank[currentQuestion];
 
@@ -156,6 +156,7 @@ class App extends Component {
             <Route path="/admin/delete-question" element={<DeletQuestionPage />} />
             <Route path="/admin/delete-topic" element={<DeleteTopicPage />} />
             <Route path="/admin/edit-question" element={<EditQuestionPage />} />
+            <Route path="/aboutUs" element={<AboutUs />} />
           </Routes>
         </div>
       </Router>

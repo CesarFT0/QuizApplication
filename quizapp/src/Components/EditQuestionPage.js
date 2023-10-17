@@ -1,137 +1,186 @@
-import React, { Component } from "react";
+import React,  { Component } from "react";
+import "./EditQuestionPage.css";
 
 class EditQuestionPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questionId: "",
-            topicId: "",
-            question_description: "",
-            option1: "",
-            option2: "",
-            option3: "",
-            option4: "",
-            correct_answer: ""
-        };
-    }
-
-    //Hanlde the form input and changes
-    handleInputChange = (e) => {
-        const { name, value } = e.target;
-        this.setState({ [name]: value });
-    }
-
-    //Handle the form submission
-    handleSubmit = (e) => {
-        e.preventDefault();
-        //Add a validation for the topicId
-        if(![1,2,3,4].includes(Number(this.state.topicId))) {
-            alert("Invalid Topic Id entered");
-            return;
+            questions: [],   //for storing the list of questions
         }
-            //Add the logic for constructing the sql insert query here
+    };
+
+    componentDidMount() {
+        //Fetch all the questions from the backend
+        this.fetchQuestions();
+    }
+
+    fetchQuestions = () => {
+        fetch("/questions/allQuestions")
+        .then((response) => response.json())
+        .then((data) => {
+            this.setState({ questions: data });
+        })
+        .catch((error) => {
+            console.error("Error fetching questions: ",error);
+        });
+    };
+
+    //Handle changes in text fields and update the data in the state
+    handleFieldChange = (questionId, fieldName, value) => {
+        //Find the question in the state
+        const updatedQuestions = this.state.questions.map((question) => {
+            if(question.questionId === questionId) {
+                //Update the specific field
+                return { ...question, [fieldName]: value};
+            }
+            return question;
+        });
+
+        //update the state
+        this.setState({ questions: updatedQuestions });
+    };
+
+    //Handle for submission (update the question in the database)
+    handleSubmit = (questionId) => {
+        const updatedQuestion = this.state.questions.find(
+            (question) => question.questionId === questionId
+        );
+
+    //Send the updated question data to your API to save changes
+    fetch("/admin/editQuestion", {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json",
+        },
+        body: JSON.stringify(updatedQuestion),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log("Question updated: ", data);
+    })
+    .catch((error) => {
+        console.error("Error updating questions: ",error);
+    });
     };
 
     render() {
+        const { questions } = this.state;
+
         return (
             <div>
-                <h2>Edit Question </h2>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label> Question ID</label>
-                        <input
-                            type="text"
-                            name="questionId"
-                            value={this.state.questionId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Topic ID</label>
-                        <input
-                            type="text"
-                            name="topicId"
-                            value={this.state.topicId}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Question Description</label>
-                        <input
-                            type="text"
-                            name="question_description"
-                            value={this.state.question_description}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 1</label>
-                        <input
-                            type="text"
-                            name="option1"
-                            value={this.state.option1}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 2</label>
-                        <input
-                            type="text"
-                            name="option2"
-                            value={this.state.option2}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 3</label>
-                        <input
-                            type="text"
-                            name="option3"
-                            value={this.state.option3}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Option 4</label>
-                        <input
-                            type="text"
-                            name="option4"
-                            value={this.state.option4}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Correct Answer</label>
-                        <input
-                            type="text"
-                            name="correct_answer"
-                            value={this.state.correct_answer}
-                            onChange={this.handleInputChange}
-                            className="form-control"
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-primary">
-                        Add Question
-                    </button>
-                </form>
+                <h2>
+                </h2>
+                <div className="table-responsive">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th>Question Id</th>
+                            <th>Question Description</th>
+                            <th>Option 1</th>
+                            <th>Option 2</th>
+                            <th>Option 3</th>
+                            <th>Option 4</th>
+                            <th>Correct Answer</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {questions.map((question) => (
+                            <tr key={question.questionId}>
+                                <td>{question.questionId}</td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.questionDescription}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "questionDescription",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.option1}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "option1",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.option2}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "option2",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.option3}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "option3",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.option4}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "option4",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text"
+                                        value={question.correctAnswer}
+                                        onChange={(e) => 
+                                        this.handleFieldChange(
+                                            question.questionId,
+                                            "correctAnswer",
+                                            e.target.value
+                                        )
+                                    }
+                                    />
+                                </td>
+                                <td>
+                                    <button
+                                    type="button"
+                                    onClick={() => this.handleSubmit(question.questionId)}
+                                    >
+                                        Update
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                </div>
             </div>
-        )
+        );
     }
-};
-
+}
 export default EditQuestionPage;
