@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import './UserSignupPage.css'; 
+import './UserSignupPage.css';
 
 class ContactUs extends Component {
   constructor(props) {
@@ -11,6 +11,8 @@ class ContactUs extends Component {
       phone: "",
       subject: "",
       message: "",
+      submittedEmails: [], 
+      isDuplicateEmail: false, 
     };
   }
 
@@ -21,13 +23,33 @@ class ContactUs extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+
+    const { email, submittedEmails } = this.state;
+    if (submittedEmails.includes(email)) {
+      this.setState({ isDuplicateEmail: true });
+      return; 
+    }
+
+    const updatedSubmittedEmails = [...submittedEmails, email];
+
     console.log("Form submitted:", this.state);
+    this.setState({
+      isDuplicateEmail: false,
+      submittedEmails: updatedSubmittedEmails,
+    });
   };
 
   render() {
+    const { isDuplicateEmail } = this.state;
+
     return (
       <div className="form-container">
         <h2 className="form-title">Contact Us</h2>
+        {isDuplicateEmail && (
+          <div className="alert alert-danger">
+            Email already submitted. Please use a different email address.
+          </div>
+        )}
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <input
@@ -36,7 +58,7 @@ class ContactUs extends Component {
               placeholder="First Name"
               value={this.state.firstName}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -46,7 +68,7 @@ class ContactUs extends Component {
               placeholder="Last Name"
               value={this.state.lastName}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -56,7 +78,7 @@ class ContactUs extends Component {
               placeholder="Email"
               value={this.state.email}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -66,7 +88,7 @@ class ContactUs extends Component {
               placeholder="Phone"
               value={this.state.phone}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -76,7 +98,7 @@ class ContactUs extends Component {
               placeholder="Message Subject"
               value={this.state.subject}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -86,7 +108,7 @@ class ContactUs extends Component {
               rows="6"
               value={this.state.message}
               onChange={this.handleInputChange}
-              className={`form-control`}
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -101,6 +123,7 @@ class ContactUs extends Component {
 }
 
 export default ContactUs;
+
 
 
 

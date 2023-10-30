@@ -16,6 +16,7 @@ import DeletQuestionPage from "./Components/DeleteQuestionPage";
 import DeleteTopicPage from "./Components/DeleteTopicPage";
 import EditQuestionPage from "./Components/EditQuestionPage";
 import AboutUs from "./Components/AboutUs";
+import Login from "./Components/Login";
 
 class App extends Component {
   constructor(props) {
@@ -147,7 +148,8 @@ class App extends Component {
                 )
               }
             />
-            <Route path="/login/user" element={<UserSignup />} />
+            <Route path="/signup/user" element={<UserSignup />} />
+            <Route path="/login/user" element={<Login />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin/dashboard" element={<AdminDashBoard />} />

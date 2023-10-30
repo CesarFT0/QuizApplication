@@ -27,8 +27,11 @@ class NavigationBar extends Component {
           <Link to="http://localhost:3000/" className="custom-link">
             <Button>Home</Button>
           </Link>
-          <Link to="/login/user" className="custom-link">
+          <Link to="/signup/user" className="custom-link">
             <Button>Sign Up</Button>
+          </Link>
+          <Link to="/login/user" className="custom-link">
+            <Button>Login</Button>
           </Link>
           <Link to="/aboutUs" className="custom-link">
             <Button>About us</Button>
