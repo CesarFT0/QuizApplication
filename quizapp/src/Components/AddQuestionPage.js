@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './AddQuestionPage.css';
 
 class AddQuestionPage extends Component {
     constructor(props) {
@@ -220,7 +221,7 @@ class AddQuestionPage extends Component {
                         </input>
                     </label>
                     <br></br>
-                    <button type="submit">
+                    <button className="add" type="submit">
                         Add Question
                     </button>
                 </form>
