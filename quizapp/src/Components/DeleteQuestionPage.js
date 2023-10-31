@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import './DeleteQuestionPage.css'
 class DeleteQuestionPage extends Component {
     constructor(props) {
         super(props);
