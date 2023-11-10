@@ -1,15 +1,22 @@
 
 .lables {
-    color: #453f3f;
+  color: #453f3f;
 }
 .error {
-    color: red;
-    font-size: 14px;
-  }
+  color: red;
+  font-size: 14px;
+}
 
-  .password-rules ul li {
-    color: white; 
-  }
+.password-rules ul li {
+  color: white;
+}
+
+.center-buttons {
+  text-align: center;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
 
 .alignment {
     align-self: center;
@@ -35,18 +42,4 @@
 
 .form-group {
   margin-bottom: 20px;
-}
-
-.btn-primary {
-  align-self: center;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-}
-
-.adminform {
-  align-items: center;
-  align-self: center;
-  align-content: center;
-  justify-content: center;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './UserSignupPage.css';
 
 function UserSignupPage() {
@@ -19,11 +19,12 @@ function UserSignupPage() {
     password: '',
   });
 
-  const navigate = useNavigate(); // Use useNavigate to navigate
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: '' });
   };
 
   const validateForm = () => {
@@ -53,10 +54,29 @@ function UserSignupPage() {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('Form is valid, submitting...');
-      navigate('/login/usersignedup'); // Use navigate to go to the home page
+    
+      fetch('/auth/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => {
+          if (response.status === 201) {
+            console.log('User registered successfully');
+            navigate('/login/usersignedup'); 
+          } else {
+            throw new Error('User registration failed');
+          }
+        })
+        .catch((error) => {
+          console.error('User registration error', error);
+      
+        });
     } else {
       console.log('Form contains errors, please correct them.');
+      
     }
   };
 

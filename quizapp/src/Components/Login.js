@@ -32,12 +32,27 @@ function Login() {
     return username.trim() && passwordRegex.test(password);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log('Form is valid, logging in...');
-      navigate('/home'); // Redirect to the home page
+      try {
+        const response = await fetch('/auth/login', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          navigate('/home');
+        } else {
+          console.log('Login failed.');
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+      }
     } else {
       console.log('Form contains errors, please correct them.');
     }
@@ -69,9 +84,9 @@ function Login() {
           />
           {errors.password && <div className="invalid-feedback">{errors.password}</div>}
         </div>
-        <button type="button" onClick={handleSubmit} className="btn-Adminlogin">
-                    Login
-                </button>
+        <button type="submit" className="btn-Adminlogin">
+          Login
+        </button>
       </form>
     </div>
   );
